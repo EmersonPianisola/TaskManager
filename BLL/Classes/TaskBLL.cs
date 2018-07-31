@@ -145,5 +145,21 @@ namespace TaskApplication.BLL.Classes
         {
             return objTaskDAL.GetTaskList(pTask);
         }
+
+        public TaskDTO Get(int pTaskID)
+        {
+            var objTASK = objTaskDAL.Single(pTaskID);
+
+            TaskDTO objTask = new TaskDTO()
+            {
+                DateCreation = objTASK.DATE_CREATION,
+                Description = objTASK.DESCRIPTION,
+                Name = objTASK.NAME,
+                Status = (TaskEnum.Status)objTASK.STATUS,
+                TaskID = objTASK.ID
+            };
+
+            return objTask;
+        }
     }
 }
