@@ -10,3 +10,6 @@ A arquitetura foi separada em 3 camadas, sendo elas:
  
  -DTO = Responsável pela transição dos objetos
 
+# Banco de Dados
+ 
+Dentro do projeto contém um backup do banco de dados (SQL Server 2012) com a estrutura necessária para o funcionamento do projeto.
