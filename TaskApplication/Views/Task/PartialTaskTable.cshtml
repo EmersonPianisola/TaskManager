@@ -1,0 +1,40 @@
+﻿@model List<TaskApplication.DTO.Classes.TaskDTO>
+
+@{
+    Layout = null;
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Data Criação</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td name="tdName">@item.Name</td>
+                    <td name="tdDescription">@item.Description</td>
+                    <td>@item.DateCreation.ToLocalTime()</td>
+                    <td name="tdStatus">@item.Status.ToString()</td>
+                    <td>
+                        <button type="button" class="btn btn-default" data-id="@item.TaskID" name="btnUpdate">
+                            <i class="tiny icon fas fa-history" title="Atualizar"></i>
+                            Atualizar
+                        </button>
+                        @Html.ActionLink("Delete", "Delete","Task", new { pTaskID = item.TaskID }, new { @class= "btn btn-default" })
+                    </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>

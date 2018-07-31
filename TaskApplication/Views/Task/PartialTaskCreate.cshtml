@@ -1,0 +1,46 @@
+﻿@model TaskApplication.DTO.Classes.TaskDTO
+
+
+<div class="modal" id="ModalCreateTask" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                Cadastrar novo motivo
+            </div>
+            @using (Html.BeginForm("Save", "Task", FormMethod.Post, new { id = "formCreateTask" }))
+            {
+            <div class="modal-body">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(x => x.TaskID)
+
+                <div class="form-group">
+                    <label class="control-label" for="Detalhes">Nome</label>
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control mw-100", @required = "required" })
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="Descricao">Descrição</label>
+                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control mw-100", @required = "required" })
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="Descricao">Status</label>
+                    <select class="form-control" name="Status" id="Status">
+                        <option value="@TaskApplication.DTO.Enum.TaskEnum.Status.Ativo" selected> Ativo </option>
+                        <option value="@TaskApplication.DTO.Enum.TaskEnum.Status.Concluido"> Concluído </option>
+                    </select>
+                    @*@Html.EnumDropDownListFor(x => x.Status, new { @class= "form-control" } )*@
+                </div>
+
+
+            </div>
+                <div class="modal-footer">
+                    <div class="btn-box">
+                        <button type="button" class="modal-action modal-close btn btn-large-gray" data-dismiss="modal" title="Fechar"><i class="fas fa-ban"></i><span>Fechar</span></button>
+                        <button type="submit" class="modal-action btn" title="Salvar"><i class="fas fa-save"></i><span>Salvar</span></button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

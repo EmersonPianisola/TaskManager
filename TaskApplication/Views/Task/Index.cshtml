@@ -1,0 +1,101 @@
+﻿@model TaskApplication.DTO.Classes.TaskDTO
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Task</h2>
+
+<div>
+
+    @using (Html.BeginForm("Search", "Task", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "formSearch" }))
+    {
+        <div class="form-row">
+            <div class="col-md-4">
+                @Html.LabelFor(m => m.StartDate)
+                @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control", @type = "date" })
+            </div>
+
+            <div class="col-md-4">
+                @Html.LabelFor(m => m.EndDate)
+                @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control", @type = "date" })
+            </div>
+        </div>
+
+        <div style="padding-top:15px">
+            <button type="button" class="btn btn-default" id="btnSearch" title="Pesquisar"><i class="fas fa-search"></i><span>Pesquisar</span></button>
+            <button type="button" class="btn btn-default" id="btnCreate" title="Pesquisar"><i class="fas fa-search"></i><span>Novo</span></button>
+        </div>
+
+        <div id="partialTableTask" style="padding-top:15px">
+            @Html.Partial("PartialTaskTable", new List<TaskApplication.DTO.Classes.TaskDTO>())
+        </div>
+    }
+
+    @Html.Partial("PartialTaskCreate", new TaskApplication.DTO.Classes.TaskDTO())
+</div>
+
+
+@section Scripts {
+    <script type="text/javascript">
+
+    $(document).ready(function(){
+        Search();
+    });
+
+    $(document).on('click', "#btnSearch" ,function () {
+        Search();
+    });
+
+    $(document).on('click', "#btnCreate", function () {
+        //$("#formCreateTask").trigger("reset");
+        ClearForm();
+
+        $("#ModalCreateTask").modal();
+    });
+
+    $(document).on('click', "[name='btnUpdate']", function () {
+        var id = $(this).attr('data-id');
+        debugger
+        //Preferi fazer no fronte para não fazer uma nova consulta no SQL
+        var name = $(this).closest('tr').find('[name="tdName"]').text();
+        var description = $(this).closest('tr').find('[name="tdDescription"]').text();
+        var status = $(this).closest('tr').find('[name="tdStatus"]').text();
+
+        $('#TaskID').val(id);
+        $('#Name').val(name);
+        $('#Description').val(description);
+        $("#Status").val(status);
+
+
+        $("#ModalCreateTask").modal();
+    });
+
+    $(document).on('click', ".modal-close", function () {
+        $("#ModalCreateTask").modal('hide');
+    });
+
+        function ClearForm() {
+            $('#TaskID').val("");
+            $('#Name').val("");
+            $('#Description').val("");
+            $("#Status").val("Ativo");
+        }
+
+    function Search() {
+            var form = $('#formSearch').serialize();
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Search","Task")",
+                data: form,
+                success: function (data) {
+                    $('#partialTableTask').html(data);
+                }
+            });
+        }
+
+    </script>
+}
